@@ -162,27 +162,29 @@ class CellIndexMethod {
         fun main(args: Array<String>) {
             //        CellIndexMethod CIM = new CellIndexMethod();
             //
-            val n = 200
-            val l = 10.0
-            val m = 8
-            val rc = 0.5
-            val particulas = generarParticulas(n, 0.2, l)
-            CellIndexMethod().cellIndexMethod(particulas, n, l, m, rc, false)
+//            val n = 2000
+//            val l = 10.0
+//            val m = 1
+//            val rc = 4.0
+//            val particulas = generarParticulas(n, 0.2, l)
+//            CellIndexMethod().cellIndexMethod(particulas, n, l, m, rc, true)
+//
+//            for(i in 0 until particulas.size) {
+//                imprimirColoreo(particulas, i, "colores.txt")
+//            }
 
-            for(i in 0 until particulas.size) {
-                imprimirColoreo(particulas, i, "colores.txt")
-            }
+            calcularTiempos()
         }
 
         private fun calcularTiempos() {
             val CIM = CellIndexMethod()
-            val n = 500
-            val maxR = 0.5
-            val l = 100.0
-            val iteraciones = 1000.0
-            val rc = 1.0
+            val n = 5000
+            val maxR = 0.1
+            val l = 300.0
+            val iteraciones = 100.0
+            val rc = 0.8
             val borderless = true
-            val maxM = 50
+            val maxM = 25
             val timesM = DoubleArray(maxM)
             var i = 0
             while (i < iteraciones) {
