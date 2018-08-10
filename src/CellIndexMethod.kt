@@ -70,7 +70,10 @@ class CellIndexMethod {
                     for (index2 in index1 + 1 until celda.size) {
                         val p = celda[index1]
                         val pVecina = celda[index2]
-                        if (p.distanciaEuclidianaBordeABorde(pVecina, false, false, L) <= rc) {
+                        if (p.distanciaEuclidianaBordeABorde(pVecina, false, false, L) <= rc
+                                || borderless && p.distanciaEuclidianaBordeABorde(pVecina, true, true, L) <= rc
+                                || borderless && p.distanciaEuclidianaBordeABorde(pVecina, true, false, L) <= rc
+                                || borderless && p.distanciaEuclidianaBordeABorde(pVecina, false, true, L) <= rc) {
                             p.vecinos.add(pVecina)
                             pVecina.vecinos.add(p)
                         }
@@ -216,20 +219,28 @@ class CellIndexMethod {
             val particulas = ArrayList<Particula>()
             val generator = Random()
             for (i in 0 until n) {
-                particulas.add(Particula(i, generator.nextDouble() * l, generator.nextDouble() * l, generator.nextDouble() * maxR))
+                val nuevaParticula = Particula(i, generator.nextDouble() * l, generator.nextDouble() * l, generator.nextDouble() * maxR)
+                var isValid = true
+                for (particula in particulas) {
+                    if(particula.distanciaEuclidianaBordeABorde(nuevaParticula, true, true, l) <= EPSILON) isValid = false
+                    if(particula.distanciaEuclidianaBordeABorde(nuevaParticula, false, true, l) <= EPSILON) isValid = false
+                    if(particula.distanciaEuclidianaBordeABorde(nuevaParticula, true, false, l) <= EPSILON) isValid = false
+                    if(particula.distanciaEuclidianaBordeABorde(nuevaParticula, false, false, l) <= EPSILON) isValid = false
+                }
+                if(isValid) particulas.add(nuevaParticula)
             }
             return particulas
         }
 
-        internal val PARTICULA_ELEGIDA_R = 200
-        internal val PARTICULA_ELEGIDA_G = 0
-        internal val PARTICULA_ELEGIDA_B = 0
-        internal val PARTICULA_VECINA_R = 0
-        internal val PARTICULA_VECINA_G = 200
-        internal val PARTICULA_VECINA_B = 0
-        internal val PARTICULA_OTRA_R = 0
-        internal val PARTICULA_OTRA_G = 0
-        internal val PARTICULA_OTRA_B = 200
+        private val PARTICULA_ELEGIDA_G = 0
+        private val PARTICULA_ELEGIDA_B = 0
+        private val PARTICULA_VECINA_R = 0
+        private val PARTICULA_ELEGIDA_R = 200
+        private val PARTICULA_VECINA_G = 200
+        private val PARTICULA_VECINA_B = 0
+        private val PARTICULA_OTRA_R = 0
+        private val PARTICULA_OTRA_G = 0
+        private val PARTICULA_OTRA_B = 200
 
 
         private fun imprimirColoreo(particulas: ArrayList<Particula>, indexParticula: Int, fileName: String) {
