@@ -3,6 +3,9 @@ package jeuDeLaVie
 import java.io.BufferedWriter
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
+import java.io.File
+
+
 
 open class GOLBoard(val x: Int, val y: Int, val z: Int) {
 
@@ -22,8 +25,9 @@ open class GOLBoard(val x: Int, val y: Int, val z: Int) {
 
     fun outputOvito(fileName: String, iteration: Int) {
         try {
+            val theFile = File(fileName + iteration)
             BufferedWriter(OutputStreamWriter(
-                    FileOutputStream(fileName + iteration), "utf-8")).use { writer ->
+                    FileOutputStream(theFile), "utf-8")).use { writer ->
                 writer.write("${board.flatten().toTypedArray().flatten().sum()}\n")
                 writer.write("\n")
                 for(i in 0 until z) {

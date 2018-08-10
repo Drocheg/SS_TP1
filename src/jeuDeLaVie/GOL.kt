@@ -5,17 +5,18 @@ class GOL {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            val epochs = 100
-            val rule = GenericRules()
+            val epochs = 10
+            val rule = StandarRules()
             val x = 100
             val y = 100
             val z = 100
 
             var oldBoard = GOLRandomBoard.generate(x,y,z)
             var newboard = GOLRandomBoard.generate(x,y,z)
-
-            for (e in 0 until epochs) {
+            newboard.outputOvito("ovito/gol", 0)
+            for (e in 1 until epochs) {
                 println(e)
+
                 val aux = oldBoard
                 oldBoard = newboard
                 newboard = aux
