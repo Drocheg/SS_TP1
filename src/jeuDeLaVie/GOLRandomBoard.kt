@@ -12,9 +12,9 @@ class GOLRandomBoard {
             val board = GOLBoardNoBoundaries(x,y,z, boundX, boundY, boundZ)
             val rand = if(seed != null)  Random(seed) else Random()
 
-            for(i in 0 until z) {
+            for(i in 0 until x) {
                 for(j in 0 until y) {
-                    for(k in 0 until x) {
+                    for(k in 0 until z) {
                         board[i,j,k] = if(rand.nextFloat() < density) 1 else 0
                     }
                 }

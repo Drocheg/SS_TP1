@@ -17,7 +17,7 @@ class GOL {
             val boundZ = true
             var oldBoard = GOLBoardReader.generate(inputFileName, boundZ = boundZ)
             var newboard = GOLBoardReader.generate(inputFileName, boundZ = boundZ)
-            newboard.outputOvito(outputFileName, 0)
+
             for (e in 1 until epochs) {
                 println(e)
 
@@ -33,7 +33,8 @@ class GOL {
                     }
                 }
 
-                newboard.outputOvito(outputFileName, e)
+                newboard.ovitoBW(e)
+                newboard.ovitoDistance(e, Triple(0,0,0))
             }
         }
     }
