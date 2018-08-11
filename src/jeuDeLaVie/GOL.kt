@@ -7,9 +7,9 @@ class GOL {
         fun main(args: Array<String>) {
             val epochs = 10
             val rule = StandarRules()
-            val x = 100
-            val y = 100
-            val z = 100
+            val x = 200
+            val y = 200
+            val z = 200
 
             var oldBoard = GOLRandomBoard.generate(x,y,z)
             var newboard = GOLRandomBoard.generate(x,y,z)
