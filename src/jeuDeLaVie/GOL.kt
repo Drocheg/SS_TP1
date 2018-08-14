@@ -12,8 +12,8 @@ class GOL {
 //            val z = 200
             //var oldBoard = GOLRandomBoard.generate(x,y,z)
             //var newboard = GOLRandomBoard.generate(x,y,z)
-            val inputFileName = "golBoards/exploder"
-            val outputFileName = "ovito/gol"
+            val inputFileName = "golBoards/glider"
+            val outputFileName = "ovito/gol_glider_50_"
             val boundZ = true
             var oldBoard = GOLBoardReader.generate(inputFileName, boundZ = boundZ)
             var newboard = GOLBoardReader.generate(inputFileName, boundZ = boundZ)
