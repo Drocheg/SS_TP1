@@ -12,12 +12,12 @@ class GOL {
 //            val z = 200
             //var oldBoard = GOLRandomBoard.generate(x,y,z)
             //var newboard = GOLRandomBoard.generate(x,y,z)
-            val inputFileName = "golBoards/glider"
-            val outputFileName = "ovito/gol_glider_50_"
+            val inputFileName = "golBoards/3D_test1"
+            val outputFileName = "3D_test1_50_"
             val boundZ = true
             var oldBoard = GOLBoardReader.generate(inputFileName, boundZ = boundZ)
             var newboard = GOLBoardReader.generate(inputFileName, boundZ = boundZ)
-
+            newboard.ovitoBW(0, outputFileName)
             for (e in 1 until epochs) {
                 println(e)
 
@@ -33,7 +33,7 @@ class GOL {
                     }
                 }
 
-                newboard.ovitoBW(e)
+                newboard.ovitoBW(e, outputFileName)
                 newboard.ovitoDistance(e, Triple(0,0,0))
             }
         }

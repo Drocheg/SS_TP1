@@ -23,8 +23,8 @@ open class GOLBoard(val x: Int, val y: Int, val z: Int) {
         board[xIndex][yIndex][zIndex] = value
     }
 
-    fun ovitoBW(iteration: Int) {
-        outputOvito(iteration, "ovitoBW") { x,y,z -> "255\t255\t255" }
+    fun ovitoBW(iteration: Int, folder: String) {
+        outputOvito(iteration, folder) { x,y,z -> "255\t255\t255" }
     }
 
     fun ovitoDistance(iteration: Int, fromPoint: Triple<Int, Int, Int>) {
