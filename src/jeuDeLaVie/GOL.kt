@@ -12,11 +12,12 @@ class GOL {
 //            val z = 200
             //var oldBoard = GOLRandomBoard.generate(x,y,z)
             //var newboard = GOLRandomBoard.generate(x,y,z)
-            val fileName = "golBoards/exploder"
+            val inputFileName = "golBoards/exploder"
+            val outputFileName = "ovito/gol"
             val boundZ = true
-            var oldBoard = GOLBoardReader.generate(fileName, boundZ = boundZ)
-            var newboard = GOLBoardReader.generate(fileName, boundZ = boundZ)
-            newboard.outputOvito("ovito/gol", 0)
+            var oldBoard = GOLBoardReader.generate(inputFileName, boundZ = boundZ)
+            var newboard = GOLBoardReader.generate(inputFileName, boundZ = boundZ)
+            newboard.outputOvito(outputFileName, 0)
             for (e in 1 until epochs) {
                 println(e)
 
@@ -32,7 +33,7 @@ class GOL {
                     }
                 }
 
-                newboard.outputOvito("ovito/gol", e)
+                newboard.outputOvito(outputFileName, e)
             }
         }
     }
