@@ -11,7 +11,7 @@ class GOL {
             val metrics = GOLMetrics();
             if (save) newboard.ovitoBW(0, filename)
             for (e in 1 .. epochs) {
-                metrics.feed(oldBoard);
+                metrics.feed(newboard);
                 val aux = oldBoard
                 oldBoard = newboard
                 newboard = aux
