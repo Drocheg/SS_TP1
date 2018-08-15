@@ -2,13 +2,17 @@ package jeuDeLaVie
 
 class GOLMetrics (val particles: MutableList<Int> = mutableListOf<Int>(),
                   val centersOfMass: MutableList<Coordinate?> = mutableListOf<Coordinate?>(),
-                  val momentsOfInertia: MutableList<Double> = mutableListOf<Double>()) {
+                  val momentsOfInertia: MutableList<Double> = mutableListOf<Double>(),
+                  var epochs : Int = 0) {
 
     fun feed(board: GOLBoard) {
         particles.add(board.count);
         centersOfMass.add(calculateCenterOfMass(board));
         momentsOfInertia.add(calculateMoment(board));
+        epochs++;
     }
+
+
 
     private fun calculateCenterOfMass(board: GOLBoard) : Coordinate? {
         var xm : Int = 0;
