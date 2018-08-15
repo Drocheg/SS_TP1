@@ -13,17 +13,17 @@ class GOLBoardReader {
             val file = File(fileName)
             val scan = Scanner(file)
 
-            val x = scan.nextInt()
-            val y = scan.nextInt()
-            val z = scan.nextInt()
+            val xBound = scan.nextInt()
+            val yBound = scan.nextInt()
+            val zBound = scan.nextInt()
             val n = scan.nextInt()
-            val board = GOLBoardNoBoundaries(x,y,z, boundX, boundY, boundZ)
+            val board = GOLBoardNoBoundaries(xBound,yBound,zBound, boundX, boundY, boundZ)
 
             for(i in 0 until n){
                 val x = scan.nextInt()
                 val y = scan.nextInt()
                 val z = scan.nextInt()
-                board[z, y, x] =  scan.nextInt() //TODO cambiar a x, y, z si juanfra hace push
+                board[x, y, z] = scan.nextInt()
             }
 
             return board

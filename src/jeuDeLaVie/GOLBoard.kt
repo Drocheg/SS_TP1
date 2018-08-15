@@ -7,7 +7,15 @@ import java.io.File
 import java.util.*
 
 
-open class GOLBoard(val x: Int, val y: Int, val z: Int) {
+open class GOLBoard(val x: Int, val y: Int, val z: Int, var count: Int = 0) {
+    constructor(other: GOLBoard) : this(other.x, other.y, other.z, other.count) {
+        for(i in 0 until x)
+            for(j in 0 until y)
+                for(k in 0 until z) {
+                    board[i][j][k] = other.board[i][j][k];
+                }
+
+    }
 
     protected val board: Array<Array<Array<Int>>> = Array(x) { Array(y) { Array(z) { 0 } } }
 
@@ -20,6 +28,7 @@ open class GOLBoard(val x: Int, val y: Int, val z: Int) {
     open operator fun set(xIndex: Int, yIndex: Int, zIndex: Int, value: Int) {
         if(zIndex < 0 || yIndex < 0 || xIndex < 0 ) { return }
         if(zIndex>=z || yIndex>=y || xIndex>=x) { return }
+        count = count - get(xIndex, yIndex, zIndex) + value;
         board[xIndex][yIndex][zIndex] = value
     }
 
