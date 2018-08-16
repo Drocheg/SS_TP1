@@ -5,7 +5,7 @@ import java.util.*
 class GOLRandomBoard {
     companion object {
 
-        private val rand = Random(120);
+        private val rand = Random(120)
 
         fun generate(x: Int, y: Int, z: Int, xRadius: Int, yRadius: Int, zRadius: Int, density: Double = 0.5,
                      boundX: Boolean = false, boundY: Boolean = false, boundZ: Boolean = false,
@@ -13,9 +13,9 @@ class GOLRandomBoard {
 
             val board = GOLBoardNoBoundaries(x,y,z, boundX, boundY, boundZ)
 
-            val centerX = x/2;
-            val centerY = y/2;
-            val centerZ = z/2;
+            val centerX = x/2
+            val centerY = y/2
+            val centerZ = z/2
 
             for(i in centerX - xRadius + 1 .. centerX + xRadius) {
                 for(j in centerY - yRadius + 1 .. centerY + yRadius) {
