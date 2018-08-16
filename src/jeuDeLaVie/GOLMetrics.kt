@@ -4,6 +4,7 @@ class GOLMetrics (val particles: MutableList<Int> = mutableListOf<Int>(),
                   val centersOfMass: MutableList<Coordinate?> = mutableListOf<Coordinate?>(),
                   val momentsOfInertia: MutableList<Double> = mutableListOf<Double>(),
                   val reachs: MutableList<Double> = mutableListOf<Double>(),
+                  val distanceTraveled: MutableList<Double> = mutableListOf<Double>(),
                   var epochs : Int = 0) {
 
     fun feed(board: GOLBoard) {
@@ -13,6 +14,7 @@ class GOLMetrics (val particles: MutableList<Int> = mutableListOf<Int>(),
         centersOfMass.add(centerOfMass)
         reachs.add(maximumDistanceToCenter(board, centerOfMass))
         momentsOfInertia.add(calculateMoment(board))
+        distanceTraveled.add(calculateDistanceTraveled(board))
         epochs++
     }
 
@@ -59,6 +61,23 @@ class GOLMetrics (val particles: MutableList<Int> = mutableListOf<Int>(),
 
         val n : Int = board.count
         return if (n == 0) null else Coordinate(xm/n, ym/n, zm/n)
+    }
+
+    private fun calculateDistanceTraveled(board: GOLBoard): Double {
+        if(distanceTraveled.isEmpty()) return 0.0
+        val lastCenter = centersOfMass[centersOfMass.count()-2]
+        val currentCenter = centersOfMass.last()
+
+        if(lastCenter==null || currentCenter==null) { return 0.0 }
+
+        val distance = Math.sqrt(
+                ((lastCenter.x - currentCenter.x) * (lastCenter.x - currentCenter.x) +
+                        (lastCenter.y - currentCenter.y) * (lastCenter.y - currentCenter.y) +
+                        (lastCenter.z - currentCenter.z) * (lastCenter.z - currentCenter.z))
+        )
+
+        return distanceTraveled.last() + distance
+
     }
 
     private fun calculateMoment(board: GOLBoard) : Double {
