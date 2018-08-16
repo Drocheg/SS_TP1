@@ -47,6 +47,40 @@ class GOL {
             return metrics
         }
 
+        fun runAging(
+                initial: GOLBoard,
+                epochs: Int,
+                rule: AgingRule,
+                save: Boolean = false) : GOLMetrics {
+            var oldBoard = initial
+            var newboard = initial.clone()
+
+            val metrics = GOLMetrics()
+            metrics.feed(newboard)
+            if (save) {
+                rule.printRule(0, newboard)
+            }
+            for (e in 1 .. epochs) {
+                val aux = oldBoard
+                oldBoard = newboard
+                newboard = aux
+
+                for (i in 0 until oldBoard.x) {
+                    for (j in 0 until oldBoard.y) {
+                        for (k in 0 until oldBoard.z) {
+                            rule.modify(oldBoard, newboard, i, j, k)
+                        }
+                    }
+                }
+
+                metrics.feed(newboard)
+                if (save) {
+                    rule.printRule(e, newboard)
+                }
+            }
+            return metrics
+        }
+
             @JvmStatic
             fun main(args: Array<String>) {
                 val epochs = 100
