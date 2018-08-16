@@ -1,6 +1,7 @@
 package jeuDeLaVie
 
 import java.lang.System.exit
+import java.util.*
 import kotlin.math.max
 import kotlin.system.exitProcess
 
@@ -15,13 +16,13 @@ class GOL {
                 save: Boolean = false,
                 maxDistance: Int = 25) : GOLMetrics {
             var oldBoard = initial
-            var newboard = GOLBoard(oldBoard)
+            var newboard = initial.clone()
 
             val metrics = GOLMetrics()
             metrics.feed(newboard)
             if (save) {
                 val centerMass = metrics.centersOfMass.last()
-                newboard.ovitoSave(0,null, maxDistance)
+                newboard.ovitoSave(0,centerMass, maxDistance)
             }
             for (e in 1 .. epochs) {
                 val aux = oldBoard
@@ -39,7 +40,7 @@ class GOL {
                 metrics.feed(newboard)
                 if (save) {
                     val centerMass = metrics.centersOfMass.last()
-                    newboard.ovitoSave(e,null, maxDistance)
+                    newboard.ovitoSave(e,centerMass, maxDistance)
                 }
             }
             return metrics
@@ -48,7 +49,7 @@ class GOL {
             @JvmStatic
             fun main(args: Array<String>) {
                 val epochs = 100
-                val rule = GenericRules("4555",4,5,5,5)
+                val rule = GenericRules(4,5,5,5)
                 val boardName = "glider3D_4555"
                 val inputFileName = "golBoards/"+ boardName
                 val outputFileName = boardName + "_"+ rule.name+"_" + epochs + "_"
@@ -63,8 +64,9 @@ class GOL {
                 val simulations = 0
                 val metricsList = mutableListOf<GOLMetrics>()
                 for (i in 0..simulations) {
-//                    val board = GOLRandomBoard.generate(100, 100, 1, 5, 5, 0, 0.5)
-                    val board = GOLBoardReader.generate(inputFileName)
+                    val rand = Random(120)
+                    val board = GOLRandomBoard.generate(100, 100, 100, 10, 10, 10, 0.5, seed = rand.nextLong())
+//                    val board = GOLBoardReader.generate(inputFileName)
                     metricsList.add(run(board, epochs, rule, true))
                 }
 

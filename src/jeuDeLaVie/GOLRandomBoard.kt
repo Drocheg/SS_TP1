@@ -5,14 +5,12 @@ import java.util.*
 class GOLRandomBoard {
     companion object {
 
-        private val rand = Random(120)
-
         fun generate(x: Int, y: Int, z: Int, xRadius: Int, yRadius: Int, zRadius: Int, density: Double = 0.5,
                      boundX: Boolean = false, boundY: Boolean = false, boundZ: Boolean = false,
                      seed: Long? = null): GOLBoard {
 
             val board = GOLBoardNoBoundaries(x,y,z, boundX, boundY, boundZ)
-
+            val rand = if(seed == null) Random() else Random(seed)
             val centerX = x/2
             val centerY = y/2
             val centerZ = z/2

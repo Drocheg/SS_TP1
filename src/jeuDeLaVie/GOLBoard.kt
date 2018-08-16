@@ -8,7 +8,7 @@ import java.util.*
 
 
 open class GOLBoard(val x: Int, val y: Int, val z: Int, var count: Int = 0) {
-    constructor(other: GOLBoard) : this(other.x, other.y, other.z, other.count) {
+    private constructor(other: GOLBoard) : this(other.x, other.y, other.z, other.count) {
         for(i in 0 until x)
             for(j in 0 until y)
                 for(k in 0 until z) {
@@ -16,6 +16,8 @@ open class GOLBoard(val x: Int, val y: Int, val z: Int, var count: Int = 0) {
                 }
 
     }
+
+    open fun clone() = GOLBoard(this)
 
     protected val board: Array<Array<Array<Int>>> = Array(x) { Array(y) { Array(z) { 0 } } }
 
@@ -57,7 +59,7 @@ open class GOLBoard(val x: Int, val y: Int, val z: Int, var count: Int = 0) {
             val color = distance/maxDistance
             "${(2*color).clamp(0.0,1.0)}\t${(2*(1-color)).clamp(0.0,1.0)}\t${0}"
         }) {
-            it.write("${fromPoint.x}\t${fromPoint.y}\t${fromPoint.z}\t1\t1\t1\t1.2\n")
+            it.write("${fromPoint.x}\t${fromPoint.y}\t${fromPoint.z}\t1\t1\t1\t0.5\n")
             writeBorder(it)
         }
     }

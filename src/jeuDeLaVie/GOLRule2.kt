@@ -1,3 +1,3 @@
 package jeuDeLaVie
 
-class GOLRule2 : GenericRules("rule2", 4,6,4,9)
+class GOLRule2 : GenericRules(4,6,4,9)
