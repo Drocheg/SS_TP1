@@ -35,7 +35,6 @@ class GOLAggregatedMetrics (val particles: List<Pair<Double, Double>> = mutableL
             if(metricsList.isEmpty()) return GOLAggregatedMetrics()
 
             val size = metricsList[0].epochs
-            println(size)
 
             for (m in metricsList) {
                 if (m.epochs != size) throw IllegalArgumentException()
@@ -98,7 +97,7 @@ class GOLAggregatedMetrics (val particles: List<Pair<Double, Double>> = mutableL
 
             val reachFile = File(folder + "/radius_agg.dat")
             BufferedWriter(OutputStreamWriter(
-                    FileOutputStream(momentsOfInertiaFile), "utf-8")).use { writer ->
+                    FileOutputStream(reachFile), "utf-8")).use { writer ->
                 for(i in 0 until reachs.size) {
                     writer.write(reachs.get(i).toFormattedString())
                     writer.write("\n")

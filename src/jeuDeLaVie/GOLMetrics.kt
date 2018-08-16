@@ -26,18 +26,19 @@ class GOLMetrics (val particles: MutableList<Int> = mutableListOf<Int>(),
         for (i in 0 until board.x)
             for (j in 0 until board.y)
                 for(k in 0 until board.z) {
-                    val distance = Math.sqrt(
-                            ((c.x - i) * (c.x - i) +
-                            (c.y - j) * (c.y - j) +
-                            (c.z - k) * (c.z - k))
-                    )
+                    if(board[i,j,k] > 0) {
+                        val distance = Math.sqrt(
+                                ((c.x - i) * (c.x - i) +
+                                        (c.y - j) * (c.y - j) +
+                                        (c.z - k) * (c.z - k))
+                        )
 
-                    if(distance > maxDistance){
-                        maxDistance = distance
+                        if (distance > maxDistance) {
+                            maxDistance = distance
+                        }
                     }
 
                 }
-
         return maxDistance
     }
 
