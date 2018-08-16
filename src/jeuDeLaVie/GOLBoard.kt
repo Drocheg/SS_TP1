@@ -19,7 +19,7 @@ open class GOLBoard(val x: Int, val y: Int, val z: Int, var count: Int = 0) {
 
     open fun clone() = GOLBoard(this)
 
-    protected val board: Array<Array<Array<Int>>> = Array(x) { Array(y) { Array(z) { 0 } } }
+    val board: Array<Array<Array<Int>>> = Array(x) { Array(y) { Array(z) { 0 } } }
 
     open operator fun get(xIndex: Int, yIndex: Int, zIndex: Int): Int {
         if(zIndex < 0 || yIndex < 0 || xIndex < 0 ) { return 0 }

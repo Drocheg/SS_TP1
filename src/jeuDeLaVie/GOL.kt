@@ -46,10 +46,44 @@ class GOL {
             return metrics
         }
 
+        fun runAging(
+                initial: GOLBoard,
+                epochs: Int,
+                rule: AgingRule,
+                save: Boolean = false) : GOLMetrics {
+            var oldBoard = initial
+            var newboard = initial.clone()
+
+            val metrics = GOLMetrics()
+            metrics.feed(newboard)
+            if (save) {
+                rule.printRule(0, newboard)
+            }
+            for (e in 1 .. epochs) {
+                val aux = oldBoard
+                oldBoard = newboard
+                newboard = aux
+
+                for (i in 0 until oldBoard.x) {
+                    for (j in 0 until oldBoard.y) {
+                        for (k in 0 until oldBoard.z) {
+                            rule.modify(oldBoard, newboard, i, j, k)
+                        }
+                    }
+                }
+
+                metrics.feed(newboard)
+                if (save) {
+                    rule.printRule(e, newboard)
+                }
+            }
+            return metrics
+        }
+
             @JvmStatic
             fun main(args: Array<String>) {
                 val epochs = 100
-                val rule = GenericRules(4,5,5,5)
+                val rule = GenericRules(11,11,9,9)
                 val boardName = "glider3D_4555"
                 val inputFileName = "golBoards/"+ boardName
                 val outputFileName = boardName + "_"+ rule.name+"_" + epochs + "_"
@@ -65,9 +99,9 @@ class GOL {
                 val metricsList = mutableListOf<GOLMetrics>()
                 for (i in 0..simulations) {
                     val rand = Random(120)
-                    val board = GOLRandomBoard.generate(100, 100, 100, 10, 10, 10, 0.5, seed = rand.nextLong())
+                    val board = GOLRandomBoard.generate(100, 100, 100, 5, 5, 5, 0.5, seed = rand.nextLong())
 //                    val board = GOLBoardReader.generate(inputFileName)
-                    metricsList.add(run(board, epochs, rule, true))
+                    metricsList.add(runAging(board, epochs, AgingRule(rule, 25), true))
                 }
 
                 val aggregated = GOLAggregatedMetrics.getAggregatedMetrics(metricsList)
