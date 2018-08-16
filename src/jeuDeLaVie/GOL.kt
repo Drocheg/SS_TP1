@@ -84,7 +84,7 @@ class GOL {
             @JvmStatic
             fun main(args: Array<String>) {
                 val epochs = 100
-                val rule = GenericRules(2,3,3,3) // estatica 2 5 4 4
+                val rule = GenericRules(4,6,6,7)
                 val boardName = "glider3D_4555"
                 val inputFileName = "golBoards/"+ boardName
                 val outputFileName = boardName + "_"+ rule.name+"_" + epochs + "_"
@@ -100,7 +100,7 @@ class GOL {
                 val metricsList = mutableListOf<GOLMetrics>()
                 val rand = Random()
                 for (i in 0 until simulations) {
-                    val board = GOLRandomBoard.generate(50, 50, 1, 15, 15, 8, 0.5, seed = rand.nextLong(), boundZ = true)
+                    val board = GOLRandomBoard.generate(100, 100, 100, 8, 8, 8, 0.2, seed = rand.nextLong(), boundZ = true)
 //                    val board = GOLBoardReader.generate(inputFileName)
                     metricsList.add(run(board, epochs, rule, i == 0))
                 }
