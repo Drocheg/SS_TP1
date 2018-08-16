@@ -3,15 +3,43 @@ package jeuDeLaVie
 class GOLMetrics (val particles: MutableList<Int> = mutableListOf<Int>(),
                   val centersOfMass: MutableList<Coordinate?> = mutableListOf<Coordinate?>(),
                   val momentsOfInertia: MutableList<Double> = mutableListOf<Double>(),
+                  val reachs: MutableList<Double> = mutableListOf<Double>(),
                   var epochs : Int = 0) {
 
     fun feed(board: GOLBoard) {
         particles.add(board.count)
-        centersOfMass.add(calculateCenterOfMass(board))
+
+        val centerOfMass = calculateCenterOfMass(board)
+        centersOfMass.add(centerOfMass)
+        reachs.add(maximumDistanceToCenter(board, centerOfMass))
         momentsOfInertia.add(calculateMoment(board))
         epochs++
     }
 
+    private fun maximumDistanceToCenter(board: GOLBoard, centerOfMass: Coordinate?): Double {
+        if(centerOfMass == null) return 0.0
+
+        val c : Coordinate = centerOfMass
+
+        var maxDistance = 0.0
+
+        for (i in 0 until board.x)
+            for (j in 0 until board.y)
+                for(k in 0 until board.z) {
+                    val distance = Math.sqrt(
+                            ((c.x - i) * (c.x - i) +
+                            (c.y - j) * (c.y - j) +
+                            (c.z - k) * (c.z - k))
+                    )
+
+                    if(distance > maxDistance){
+                        maxDistance = distance
+                    }
+
+                }
+
+        return maxDistance
+    }
 
 
     private fun calculateCenterOfMass(board: GOLBoard) : Coordinate? {

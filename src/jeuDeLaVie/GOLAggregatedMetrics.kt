@@ -6,7 +6,8 @@ import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 
 class GOLAggregatedMetrics (val particles: List<Pair<Double, Double>> = mutableListOf<Pair<Double, Double>>(),
-                            val momentsOfInertia: List<Pair<Double, Double>> = mutableListOf<Pair<Double, Double>>()) {
+                            val momentsOfInertia: List<Pair<Double, Double>> = mutableListOf<Pair<Double, Double>>(),
+                            val reachs: MutableList<Pair<Double, Double>> = mutableListOf<Pair<Double, Double>>()) {
 
     companion object {
 
@@ -42,38 +43,71 @@ class GOLAggregatedMetrics (val particles: List<Pair<Double, Double>> = mutableL
 
             val aggregatedParticles = mutableListOf<Pair<Double, Double>>()
             val aggregatedMomentsOfInertia = mutableListOf<Pair<Double, Double>>()
+            val aggregatedReachs = mutableListOf<Pair<Double, Double>>()
 
 
             for(i in 0 until size) {
                 val particles = mutableListOf<Int>()
                 val momentsOfInertia = mutableListOf<Double>()
+                val reachs = mutableListOf<Double>()
 
                 for (m in metricsList) {
                     particles.add(m.particles[i])
                     momentsOfInertia.add(m.momentsOfInertia[i])
+                    reachs.add(m.reachs[i])
                 }
 
                 aggregatedParticles.add(getStats(particles))
                 aggregatedMomentsOfInertia.add(getStats(momentsOfInertia))
+                aggregatedReachs.add(getStats(reachs))
             }
 
-            return GOLAggregatedMetrics(aggregatedParticles, aggregatedMomentsOfInertia)
+            return GOLAggregatedMetrics(aggregatedParticles, aggregatedMomentsOfInertia, aggregatedReachs)
         }
 
     }
 
     fun output(folder: String) {
         File(folder).mkdirs()
+
         try {
-            val theFile = File(folder + "/particlecount.dat")
+
+
+            val particlesFile = File(folder + "/particles_agg.dat")
             BufferedWriter(OutputStreamWriter(
-                    FileOutputStream(theFile), "utf-8")).use { writer ->
+                    FileOutputStream(particlesFile), "utf-8")).use { writer ->
                 for(i in 0 until particles.size) {
                     writer.write(particles.get(i).toFormattedString())
                     writer.write("\n")
                 }
                 writer.close()
             }
+
+
+
+            val momentsOfInertiaFile = File(folder + "/inertia_agg.dat")
+            BufferedWriter(OutputStreamWriter(
+                    FileOutputStream(momentsOfInertiaFile), "utf-8")).use { writer ->
+                for(i in 0 until momentsOfInertia.size) {
+                    writer.write(momentsOfInertia.get(i).toFormattedString())
+                    writer.write("\n")
+                }
+                writer.close()
+            }
+
+
+            val reachFile = File(folder + "/radius_agg.dat")
+            BufferedWriter(OutputStreamWriter(
+                    FileOutputStream(momentsOfInertiaFile), "utf-8")).use { writer ->
+                for(i in 0 until reachs.size) {
+                    writer.write(reachs.get(i).toFormattedString())
+                    writer.write("\n")
+                }
+                writer.close()
+            }
+
+
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
