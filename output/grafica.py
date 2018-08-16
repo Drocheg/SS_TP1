@@ -50,22 +50,25 @@ for i in range(len(radius)):
 
 plt.style.use('ggplot')
 
-fig, [ax1, ax2, ax3]  = plt.subplots(nrows=3, sharex=True, figsize=(9, 6))
+fig, [ax1, ax2, ax3]  = plt.subplots(nrows=3, sharex=True, figsize=(10, 8))
 
 ax1.errorbar(x1, y1, yerr=yerr1, fmt='.')
-ax1.set(ylabel='Radio')
+ax1.set_ylabel('Radio', size=10.0)
 
 ax2.errorbar(x2, y2, yerr=yerr2, fmt='.')
-ax2.set(ylabel='Particulas')
+ax2.set_ylabel('Cantidad de particulas', size=10.0)
 
 ax3.errorbar(x3, y3, yerr=yerr3, fmt='.')
-ax3.set(ylabel='Particulas')
+ax3.set_ylabel('Distancia recorrida\npor el centro de masa', size=10.0)
+ax3.set_xlabel('Generación')
+
+
 
 
 #ax.xaxis.set_ticks([i+1 for i in range(0, len(x), max([ math.floor(len(x)/10), 1]))])
 
 
-#plt.savefig('radius.png', format='png', bbox_inches = 'tight', dpi = 100)
+plt.savefig('graph.png', format='png', bbox_inches = 'tight', dpi = 100)
 
 
 # ========================================================================================
