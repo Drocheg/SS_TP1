@@ -165,7 +165,7 @@ class CellIndexMethod {
 
         @JvmStatic
         fun main(args: Array<String>) {
-            //        cellIndex.CellIndexMethod CIM = new cellIndex.CellIndexMethod();
+            //        cellIndex.CellIndexMethod CIM = new cellIndex.CellIndexMethod()
             //
 //            val n = 2000
 //            val l = 10.0

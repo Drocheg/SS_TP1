@@ -16,6 +16,6 @@ class GOLBoardNoBoundaries(x: Int, y: Int, z: Int,
         if(boundX && (xIndex<0 || x<=xIndex)) { return }
         if(boundY && (yIndex<0 || y<=yIndex)) { return }
         if(boundZ && (zIndex<0 || z<=zIndex)) { return }
-        super.set(Math.floorMod(xIndex, x), Math.floorMod(yIndex, y), Math.floorMod(zIndex, z), value);
+        super.set(Math.floorMod(xIndex, x), Math.floorMod(yIndex, y), Math.floorMod(zIndex, z), value)
     }
 }

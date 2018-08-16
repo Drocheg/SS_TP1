@@ -12,7 +12,7 @@ open class GOLBoard(val x: Int, val y: Int, val z: Int, var count: Int = 0) {
         for(i in 0 until x)
             for(j in 0 until y)
                 for(k in 0 until z) {
-                    board[i][j][k] = other.board[i][j][k];
+                    board[i][j][k] = other.board[i][j][k]
                 }
 
     }
@@ -28,46 +28,81 @@ open class GOLBoard(val x: Int, val y: Int, val z: Int, var count: Int = 0) {
     open operator fun set(xIndex: Int, yIndex: Int, zIndex: Int, value: Int) {
         if(zIndex < 0 || yIndex < 0 || xIndex < 0 ) { return }
         if(zIndex>=z || yIndex>=y || xIndex>=x) { return }
-        count = count - get(xIndex, yIndex, zIndex) + value;
+        count = count - get(xIndex, yIndex, zIndex) + value
         board[xIndex][yIndex][zIndex] = value
     }
 
-    fun ovitoBW(iteration: Int, folder: String) {
-        outputOvito(iteration, folder) { x,y,z -> "255\t255\t255" }
-    }
-
-    fun ovitoDistance(iteration: Int, fromPoint: Triple<Int, Int, Int>) {
-        outputOvito(iteration, "ovitoDistance") { x,y,z ->
-            val distance = Math.floor(Math.sqrt(
-                    ((fromPoint.first - x) * (fromPoint.first - x) +
-                            (fromPoint.second - y) * (fromPoint.second - y) +
-                            (fromPoint.third - z) * (fromPoint.third - z)).toDouble()
-            ))
-
-            val color = (distance/(this.x*2) * 255).toInt()
-
-            "${Random().nextInt(255)}\t${Random().nextInt(255)}\t${Random().nextInt(255)}"
+    fun ovitoSave(iteration: Int, centerMass: Coordinate?, maxDistance: Int) {
+        if(centerMass == null) {
+            ovitoBW(iteration, "ovitoDistance")
+        } else {
+            ovitoDistance(iteration, centerMass, maxDistance)
         }
     }
 
-    private fun outputOvito(iteration: Int,folder: String, toColor: (Int, Int, Int) -> String) {
+    fun ovitoBW(iteration: Int, folder: String) {
+        outputOvito(8,iteration, folder, { _,_,_ -> "255\t255\t255" }) {
+            writeBorder(it)
+        }
+    }
+
+    fun ovitoDistance(iteration: Int, fromPoint: Coordinate, maxDistance: Int) {
+        outputOvito(9, iteration, "ovitoDistance", { x,y,z ->
+            val distance = Math.sqrt(
+                    ((fromPoint.x - x) * (fromPoint.x - x) +
+                    (fromPoint.y - y) * (fromPoint.y - y) +
+                    (fromPoint.z - z) * (fromPoint.z - z)).toDouble()
+            )
+
+            val color = distance/maxDistance
+            "${(2*color).clamp(0.0,1.0)}\t${(2*(1-color)).clamp(0.0,1.0)}\t${0}"
+        }) {
+            it.write("${fromPoint.x}\t${fromPoint.y}\t${fromPoint.z}\t1\t1\t1\t1.2\n")
+            writeBorder(it)
+        }
+    }
+
+    private fun writeBorder(writer: BufferedWriter) {
+        writer.write("${0}\t${0}\t${0}\t0\t0\t0\t0.1\n")
+        writer.write("${x}\t${0}\t${0}\t0\t0\t0\t0.1\n")
+        writer.write("${0}\t${y}\t${0}\t0\t0\t0\t0.1\n")
+        writer.write("${x}\t${y}\t${0}\t0\t0\t0\t0.1\n")
+        writer.write("${0}\t${0}\t${z}\t0\t0\t0\t0.1\n")
+        writer.write("${x}\t${0}\t${z}\t0\t0\t0\t0.1\n")
+        writer.write("${0}\t${y}\t${z}\t0\t0\t0\t0.1\n")
+        writer.write("${x}\t${y}\t${z}\t0\t0\t0\t0.1\n")
+    }
+
+    fun ovitoCenterMass(iteration: Int, centerMass: Coordinate) {
+        outputOvito(1, iteration, "ovitoCenterMass",{_,_,_ -> "1\t1\t1"}) {
+            it.write("${centerMass.x}\t${centerMass.y}\t${centerMass.z}\t1\t0\t0\t1.0\n")
+        }
+    }
+
+    private fun outputOvito(extraLines: Int = 0,
+                            iteration: Int,
+                            folder: String,
+                            toColor: (Int, Int, Int) -> String,
+                            after: (BufferedWriter) -> Unit = {}) {
+
         File(folder).mkdirs()
         try {
             val theFile = File(folder + "/" + folder + iteration)
             BufferedWriter(OutputStreamWriter(
                     FileOutputStream(theFile), "utf-8")).use { writer ->
-                writer.write("${board.flatten().toTypedArray().flatten().sum()}\n")
+                writer.write("${board.flatten().toTypedArray().flatten().sum() + extraLines}\n")
                 writer.write("\n")
                 for(i in 0 until x) {
                     for(j in 0 until y) {
                         for(k in 0 until z) {
                             if(this[i,j,k] != 0) {
                                 val col = toColor(i,j,k)
-                                writer.write("$i\t$j\t$k\t" + col + "\n")
+                                writer.write("$i\t$j\t$k\t" + col + "\t0.3\n")
                             }
                         }
                     }
                 }
+                after(writer)
                 writer.close()
             }
         } catch (e: Exception) {
@@ -90,5 +125,6 @@ open class GOLBoard(val x: Int, val y: Int, val z: Int, var count: Int = 0) {
 
         return boardString.toString()
     }
-
 }
+
+fun Double.clamp(min: Double, max: Double): Double = Math.max(min, Math.min(this, max))
