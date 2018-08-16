@@ -1,11 +1,16 @@
 package jeuDeLaVie
 
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStreamWriter
+
 class GOLAggregatedMetrics (val particles: List<Pair<Double, Double>> = mutableListOf<Pair<Double, Double>>(),
                             val momentsOfInertia: List<Pair<Double, Double>> = mutableListOf<Pair<Double, Double>>()) {
 
     companion object {
 
-        fun getStats(list: List<Number>) : Pair<Double, Double> {
+        fun getStats(list: List<Number>): Pair<Double, Double> {
             val size = list.size;
             var sum = 0.0;
             var stdAcum = 0.0;
@@ -14,7 +19,7 @@ class GOLAggregatedMetrics (val particles: List<Pair<Double, Double>> = mutableL
                 sum += num.toDouble();
             }
 
-            val mean : Double = sum/size;
+            val mean: Double = sum / size;
 
             for (num in list) {
                 stdAcum += (num.toDouble() - mean) * (num.toDouble() - mean);
@@ -25,8 +30,8 @@ class GOLAggregatedMetrics (val particles: List<Pair<Double, Double>> = mutableL
             return Pair(mean, std);
         }
 
-        fun getAggregatedMetrics(metricsList : List<GOLMetrics>) : GOLAggregatedMetrics {
-            if(metricsList.isEmpty()) return GOLAggregatedMetrics();
+        fun getAggregatedMetrics(metricsList: List<GOLMetrics>): GOLAggregatedMetrics {
+            if (metricsList.isEmpty()) return GOLAggregatedMetrics();
 
             val size = metricsList[0].epochs;
             println(size);
@@ -39,7 +44,7 @@ class GOLAggregatedMetrics (val particles: List<Pair<Double, Double>> = mutableL
             val aggregatedMomentsOfInertia = mutableListOf<Pair<Double, Double>>();
 
 
-            for(i in 0 until size) {
+            for (i in 0 until size) {
                 val particles = mutableListOf<Int>();
                 val momentsOfInertia = mutableListOf<Double>();
                 for (m in metricsList) {
@@ -53,6 +58,26 @@ class GOLAggregatedMetrics (val particles: List<Pair<Double, Double>> = mutableL
 
             return GOLAggregatedMetrics(aggregatedParticles, aggregatedMomentsOfInertia);
         }
+
     }
 
+    fun output(folder: String) {
+        File(folder).mkdirs()
+        try {
+            val theFile = File(folder + "/particlecount.dat")
+            BufferedWriter(OutputStreamWriter(
+                    FileOutputStream(theFile), "utf-8")).use { writer ->
+                for(i in 0 until particles.size) {
+                    writer.write(particles.get(i).toFormattedString())
+                    writer.write("\n")
+                }
+                writer.close()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 }
+
+fun Pair<Double,Double>.toFormattedString(): String = "$first $second"
+
